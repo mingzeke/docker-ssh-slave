@@ -34,6 +34,9 @@ ENV JENKINS_AGENT_HOME ${JENKINS_AGENT_HOME}
 RUN groupadd -g ${gid} ${group} \
     && useradd -d "${JENKINS_AGENT_HOME}" -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}"
 
+# Avoid ERROR: invoke-rc.d: policy-rc.d denied execution of start.
+RUN sed -i "s/^exit 101$/exit 0/" /usr/sbin/policy-rc.d
+
 # setup SSH server
 RUN apt-get update \
     && curl -fsSL get.docker.com -o get-docker.sh \
