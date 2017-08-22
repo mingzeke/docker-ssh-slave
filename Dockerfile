@@ -36,6 +36,10 @@ RUN groupadd -g ${gid} ${group} \
 
 # setup SSH server
 RUN apt-get update \
+    && curl -fsSL get.docker.com -o get-docker.sh \
+    && sh get-docker.sh \
+    && rm get-docker.sh \
+    && usermod -aG docker jenkins \
     && apt-get install --no-install-recommends -y openssh-server \
     && apt-get clean
 RUN sed -i 's/#PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
